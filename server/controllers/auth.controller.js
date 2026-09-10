@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 const User = require("../models/user.model");
 
 const generateToken = (userId) => jwt.sign({ id: userId }, process.env.JWT_SECRET, {
@@ -115,6 +116,52 @@ const loginUser = async (req, res) => {
     }
 };
 
+const createDemoUser = async (req, res) => {
+    try {
+        let user;
+        let email;
+        let password;
+
+        do {
+            const randomValue = crypto.randomBytes(12).toString("hex");
+            email = `demo-${randomValue}@inib.demo`;
+            password = `INIB@${randomValue}`;
+            user = await User.create({
+                name: "INIB Demo User",
+                email,
+                password
+            }).catch((error) => {
+                if (error.code === 11000) {
+                    return null;
+                }
+
+                throw error;
+            });
+        } while (!user);
+
+        const token = generateToken(user._id);
+
+        res.status(201).json({
+            success: true,
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            },
+            demoCredentials: {
+                email,
+                password
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Failed to create demo account"
+        });
+    }
+};
+
 const getCurrentUser = async (req, res) => {
     res.status(200).json({
         success: true,
@@ -129,6 +176,7 @@ const getCurrentUser = async (req, res) => {
 module.exports = {
     registerUser,
     loginUser,
+    createDemoUser,
     getCurrentUser,
     generateToken
 };

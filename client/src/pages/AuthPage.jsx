@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, LockKeyhole, Mail, UserRound } from 'lucide-react';
-import { loginUser, registerUser } from '../services/taskApi';
+import { createDemoAccount, loginUser, registerUser } from '../services/taskApi';
 
 const initialForm = {
   name: '',
@@ -42,6 +42,21 @@ export default function AuthPage({ mode = 'login', onAuthSuccess }) {
       navigate('/');
     } catch (err) {
       setError(err?.response?.data?.message || 'Authentication failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    setError('');
+    setIsSubmitting(true);
+
+    try {
+      const response = await createDemoAccount();
+      onAuthSuccess(response.token, response.user);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Unable to create a demo account. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -119,6 +134,17 @@ export default function AuthPage({ mode = 'login', onAuthSuccess }) {
             {isSubmitting ? 'Please wait...' : isRegister ? 'Create account' : 'Sign in'}
             <ArrowRight size={16} />
           </button>
+
+          {!isRegister && (
+            <button
+              type="button"
+              className="secondary-button auth-submit"
+              onClick={handleDemoLogin}
+              disabled={isSubmitting}
+            >
+              Try Demo Account
+            </button>
+          )}
         </form>
 
         <p className="auth-switch">

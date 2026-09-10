@@ -85,6 +85,21 @@ function App() {
             )
           }
         />
+        <Route
+          path="/dashboard"
+          element={
+            user ? (
+              <Dashboard
+                theme={theme}
+                onToggleTheme={toggleTheme}
+                user={user}
+                onLogout={handleLogout}
+              />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
         <Route path="*" element={<Navigate to={user ? '/' : '/login'} replace />} />
       </Routes>
     </BrowserRouter>

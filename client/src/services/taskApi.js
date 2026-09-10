@@ -25,6 +25,11 @@ export const loginUser = async (credentials) => {
   return response.data;
 };
 
+export const createDemoAccount = async () => {
+  const response = await api.post('/api/auth/demo');
+  return response.data;
+};
+
 export const registerUser = async (userData) => {
   const response = await api.post('/api/auth/register', userData);
   return response.data;
