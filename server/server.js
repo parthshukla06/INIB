@@ -14,9 +14,22 @@ const allowedOrigins = new Set([
     "https://inib-seven.vercel.app"
 ]);
 
+const isAllowedOrigin = (origin) => {
+    if (!origin || allowedOrigins.has(origin)) {
+        return true;
+    }
+
+    try {
+        const url = new URL(origin);
+        return url.protocol === "https:" && url.hostname.endsWith(".vercel.app");
+    } catch (error) {
+        return false;
+    }
+};
+
 const corsOptions = {
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.has(origin)) {
+        if (isAllowedOrigin(origin)) {
             return callback(null, true);
         }
 
