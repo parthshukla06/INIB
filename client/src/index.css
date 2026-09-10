@@ -1,0 +1,64 @@
+:root {
+  --bg: #f4f7fb;
+  --bg-soft: #eef3ff;
+  --bg-elevated: rgba(255, 255, 255, 0.88);
+  --card-soft: #f8fafc;
+  --text-strong: #111827;
+  --text-muted: #64748b;
+  --border: rgba(148, 163, 184, 0.2);
+  --primary: #3b82f6;
+  --primary-strong: #2563eb;
+  --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.06);
+  color-scheme: light;
+  font-family: Inter, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root[data-theme='dark'] {
+  --bg: #0b1220;
+  --bg-soft: #111827;
+  --bg-elevated: rgba(17, 24, 39, 0.92);
+  --card-soft: #111827;
+  --text-strong: #f8fafc;
+  --text-muted: #94a3b8;
+  --border: rgba(148, 163, 184, 0.2);
+  --primary: #60a5fa;
+  --primary-strong: #3b82f6;
+  --shadow-soft: 0 12px 40px rgba(2, 6, 23, 0.4);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--bg);
+  color: var(--text-strong);
+  font-family: Inter, 'Segoe UI', sans-serif;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1, h2, h3, p {
+  margin-top: 0;
+}
+
+img, svg {
+  display: block;
+}
