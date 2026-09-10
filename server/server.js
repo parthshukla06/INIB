@@ -8,11 +8,31 @@ const authRoutes = require("./routes/auth.routes");
 
 const app = express();
 
+const allowedOrigins = new Set([
+    "http://localhost:5173",
+    "https://inib-seven.vercel.app"
+]);
+
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.has(origin)) {
+            return callback(null, true);
+        }
+
+        return callback(new Error("Origin is not allowed by CORS"));
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: false,
+    optionsSuccessStatus: 204
+};
+
 // Connect to MongoDB
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(express.json());
 
 // Test route
